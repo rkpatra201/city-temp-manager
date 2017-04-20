@@ -18,15 +18,18 @@ public class CityTempDao {
 
 	// setter for hibernateTemplate
 	@Autowired
-	public void setHibernateTemplate( SessionFactory sessionFactory) {
+	public void setHibernateTemplate(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<CityTemp> loadAll(String prefix) {
-		Session session=sessionFactory.openSession();
-		Query query=session.createQuery("FROM CityTemp as p WHERE p.name like :name");
-		query.setParameter("name", prefix+"%");
-		return query.list();
+		Session session = sessionFactory.openSession();
+		Query query = session.createQuery("FROM CityTemp as p WHERE p.name like :name");
+		query.setParameter("name", prefix + "%");
+		List<CityTemp> list = query.list();
+		session.close();
+		return list;
 	}
 
 }
